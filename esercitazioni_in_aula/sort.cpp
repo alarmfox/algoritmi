@@ -3,7 +3,7 @@
 #include <cassert>
 
 std::vector<int> bubbleSortSolution(std::vector<int>& input);
-void swap(std::vector<int>& input, int i, int j);
+void swap(std::vector<int>& input, const int i, const int j);
 int bubbleSort(std::vector<int>& input);
 
 int main() {
@@ -49,7 +49,7 @@ int bubbleSort(std::vector<int>& input) {
     return res;
 }
 
-void swap(std::vector<int>& input, int i, int j) {
+void swap(std::vector<int>& input, const int i, const int j) {
     int tmp = input[i];
     input[i] = input[j];
     input[j] = tmp;
