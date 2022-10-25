@@ -1,18 +1,22 @@
 #include <iostream>
 
-
-
 template <typename T> class Tree {
 private:
     struct Node {
         T data;
+        float priority;
         struct Node* left, *right, *parent;
-        Node(T x) : data(x), left(nullptr), right(nullptr), parent(nullptr) {}
+        Node(T x) : data(x), left(nullptr), right(nullptr), parent(nullptr) {
+            priority = (float)std::rand() / (float) RAND_MAX;
+        }
     };
     static const int count = 10;
     Node* root = nullptr;
     void _print(Node* n, int space) const;
     void destroy(Node* n);
+    void left_rotate(Node* x);
+    void right_rotate(Node* x);
+    void move_up(Node* x);
 
 public:
     void insert(const T& elem);
@@ -21,31 +25,35 @@ public:
 
 };
 
+
 template <typename T> void Tree<T>::insert(const T& elem) {
-    if (!root) {
-        root = new Node(elem);
-        return;
-    }
     Node* z = new Node(elem);
     Node* y = nullptr;
     Node* x = root;
     while (x) {
         y = x;
-        if (elem < x->data) {
+        if (z->data < x->data) {
             x = x->left;
         }
         else {
             x = x->right;
         }
     }
+
     z->parent = y;
 
-    if (elem < y->data) {
+    if (!y) {
+		root = z;
+	} else if (z->data < y->data) {
         y->left = z;
-    }
-    else {
+    } else {
         y->right = z;
     }
+
+    if (z->parent) {
+        move_up(z);
+    }
+    
 }
 
 template <typename T>  void Tree<T>::print() const {
@@ -65,7 +73,7 @@ template <typename T>  void Tree<T>::_print(Node * n, int space) const {
         std::cout<< ' ';
     }
 
-    std::cout << n->data << "\n";
+    std::cout << "(" << n->data << "," << n->priority<< ')' << "\n";
 
     _print(n -> left, space);
 
@@ -84,30 +92,69 @@ template <typename T>  void Tree<T>::destroy(Node* n) {
     }
 }
 
-// TREE-INSERT.T; ´/
-// 1 y D NIL
-// 2 x D T:root
-// 3 while x ¤ NIL
-// 4 y D x
-// 5 if ´:key < x:key
-// 6 x D x:left
-// 7 else x D x:right
-// 8 ´:p D y
-// 9 if y == NIL
-// 10 T:root D ´ // tree T was empty
-// 11 elseif ´:key < y:key
-// 12 y:left D ´
-// 13 else y:right D ´
+
+template <typename T>  void Tree<T>::left_rotate(Node* n) {
+	Node* y = n->right;
+	n->right = y->left;
+	if (y->left) {
+		y->left->parent = n;
+	}
+	y->parent = n->parent;
+	if (!n->parent) {
+		this->root = y;
+	} else if (n == n->parent->left) {
+		n->parent->left = y;
+	} else {
+		n->parent->right = y;
+	}
+	y->left = n;
+	n->parent = y;
+}
+
+template <typename T>  void Tree<T>::right_rotate(Node* n) {
+	Node* y = n->left;
+	n->left = y->right;
+	if (y->right) {
+		y->right->parent = n;
+	}
+	y->parent = n->parent;
+	if (!n->parent) {
+		this->root = y;
+	} else if (n == n->parent->right) {
+		n->parent->right = y;
+	} else {
+		n->parent->left = y;
+	}
+	y->right = n;
+	n->parent = y;
+}
+
+template <typename T> void Tree<T>::move_up(Node* n) {
+    if (!n->parent) {
+		return;
+	}
+	if (n->parent && n->priority >= n->parent->priority) {
+	    return;
+	}
+
+	if (n == n->parent->left) {
+		right_rotate(n->parent);
+	} else {
+		left_rotate(n->parent);
+	}
+    move_up(n);
+}
 
 int main() {
 
+    std::srand(time(0));
     Tree<int> t;
 
     t.insert(5);
     t.insert(4);
     t.insert(3);
     t.insert(2);
-    t.insert(7);
+    t.insert(1);
 
     t.print();
 
