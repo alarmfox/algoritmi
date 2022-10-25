@@ -19,14 +19,14 @@ private:
     void move_up(Node* x);
 
 public:
-    void insert(const T& elem);
+    void treap_insert(const T& elem);
     void print() const;
     ~Tree();
 
 };
 
 
-template <typename T> void Tree<T>::insert(const T& elem) {
+template <typename T> void Tree<T>::treap_insert(const T& elem) {
     Node* z = new Node(elem);
     Node* y = nullptr;
     Node* x = root;
@@ -150,11 +150,11 @@ int main() {
     std::srand(time(0));
     Tree<int> t;
 
-    t.insert(5);
-    t.insert(4);
-    t.insert(3);
-    t.insert(2);
-    t.insert(1);
+    t.treap_insert(5);
+    t.treap_insert(4);
+    t.treap_insert(3);
+    t.treap_insert(2);
+    t.treap_insert(1);
 
     t.print();
 
