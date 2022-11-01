@@ -1,133 +1,126 @@
 #include <iostream>
+#include <vector>
+#include <cassert>
 
 #define DEBUG 1
 
-template <typename T> class List {
-
-private:
+template <typename T>
+struct LinkedList {
     struct Node {
         T elem;
-        Node* next;
-        Node* prev;
-
+        Node* prev, *next;
+        Node(const T& e) {elem = e; prev = nullptr; next = nullptr; } 
     };
-    int n;
     Node* head;
-public:
-    List() { n = 0; head = nullptr; }
-    ~List();
-    void insert(const T&);
-    void half_reverse();
-    void destroy();
-    void print(std::ostream&)const;
+    int size;
 
-};
+    LinkedList() { size = 0; head = nullptr; }
 
-template <typename T>List<T>::~List() {
-    destroy();
-}
-
-
-template <typename T> void List<T>::destroy() {
-    Node* temp;
-    while (head) {
-        temp = head;
-        head = head->next;
-        delete temp;
+    void destroy() {
+        struct Node* temp;
+        while (head) {
+            temp = head->next;
+            delete head;
+            head = temp;
+        }
+        head = nullptr;
+        size = 0;
     }
-    n = 0;
-}
 
-template <typename T> void List<T>::insert(const T& e) {
-    Node* p = new Node;
+    void insert(const T& elem) {
+        Node* p = new Node(elem);
 
-    p->elem = e;
-    p->next = nullptr;
-    p->prev = nullptr;
-    if (!head) {
-        head = p;
-    }
-    else {
+        size+=1;
+        // se è il primo elemento lo associamo alla testa della lista
+        if (!head) {
+            head = p;
+            return;
+        }
+        // scorriamo fino in fondo ed aggiungiamo l'elemento in coda
         Node* temp = head;
-        while (temp->next != NULL)
-            temp = temp->next;
+        while (temp->next) temp = temp->next;
         temp->next = p;
         p->prev = temp;
     }
-    ++n;
-}
 
+    void half_reverse() {
+        // se la lista ha meno di due elementi non ha senso continuare
+        if (size <=2) {
+            return;
+        }
+        // troviamo la metà degli elementi e li scorriamo
+        const int mid = size / 2;
+        Node* current = head, *prev = nullptr, *next = nullptr, *last = nullptr;
+        for (int i = 0; i < mid; ++i) {
+            current = current->next;
+        }
+        // salviamo l'ultimo elemento della prima metà per poi ricollegare alla metà invertita
+        last = current -> prev;
+        while (current) {
+            // swap di un elemento della lista con il suo successivo e "incrementiamo" il puntatore current
+            next = current->next;
+            current->next = prev;
+            prev = current;
+            current = next;
+        }
+        // uniamo la prima metà con quella invertita
+        last -> next = prev;
+    }
 
-template <typename T> void List<T>::print(std::ostream& out)const {
-    Node* current = head;
-    while (current) {
-        out << current->elem << std::endl;
-        current = current->next;
+    std::ostream& print(std::ostream& out) const {
+        Node* current = head;
+        while (current) {
+            out << current->elem << ' ';
+            current = current->next;
+        }
+        return out;
+    }
+};
+
+template <typename T>
+void assert_list(const struct LinkedList<T> a, const std::vector<T> & b) {
+    assert(a.size == b.size());
+
+    struct LinkedList<T>::Node* current = a.head;
+    for (int i = 0;  i < b.size() && current; ++i, current = current->next) {
+        assert(b[i] == current->elem);
     }
 }
 
-// 1 2 3 4 5 6 7
-// 1 2 3 7 6 5 4
-template <typename T> void List<T>::half_reverse() {
-    const int mid = n / 2;
-
-    Node* current = head, *prev = nullptr, *next = nullptr, *last = nullptr;
-    for (int i = 0; i < mid; ++i) {
-        current = current->next;
+template <typename T>
+std::ostream& print_vector(const std::vector<T>& input, std::ostream& out) {
+    for (const int elem: input) {
+        out << elem << ' ';
     }
-    last = current -> prev;
-
-    while (current) {
-        // Store next
-        next = current->next;
-        // Reverse current node's pointer
-        current->next = prev;
-        // Move pointers one position ahead.
-        prev = current;
-        current = next;
-    }
-
-    last -> next = prev;
+    return out;
 }
 
 int main() {
-    List<int> list;
+    std::vector<std::vector<int>> inputs = {
+        { 5, 6, 4, 5, 7, 9 }, 
+        { 1, 2, 3 },
+        { 1, 2 },
+        { 2, 4, 3, 6, 6, 9, 3 },
+    };
+    std::vector<std::vector<int>> results = {
+        { 5, 6, 4, 9, 7, 5 }, 
+        { 1, 3, 2 },
+        { 1, 2 },
+        { 2, 4, 3, 3, 9, 6, 6 },
+    };
 
-
-    list.insert(1);
-    list.insert(2);
-    list.insert(3);
-    list.insert(4);
-    list.insert(5);
-    list.insert(6);
-    list.insert(7);
-
-
-    if (DEBUG) {
-        list.print(std::cout);
-        std::cout << "sus" << std::endl;
+    struct LinkedList<int> linked_list;
+    for (int i = 0; i < inputs.size(); ++i) {
+        for (int j = 0; j < inputs[i].size(); ++j) {
+            linked_list.insert(inputs[i][j]);
+        }
+        linked_list.half_reverse();
+        if (DEBUG) {
+            std::cout<<"INPUT : "; print_vector(inputs[i], std::cout) << std::endl;
+            std::cout<<"OUTPUT: "; linked_list.print(std::cout) << "\n\n";
+        }
+        assert_list(linked_list, results[i]);
+        linked_list.destroy();
     }
 
-    list.half_reverse();
-    list.print(std::cout);
-
-    list.destroy();
-
-    std::cout << "sus" << std::endl;
-
-    list.insert(1);
-    list.insert(2);
-    list.insert(3);
-    list.insert(4);
-    list.insert(5);
-    list.insert(6);
-    list.insert(7);
-    list.insert(8);
-    list.insert(9);
-    list.insert(10);
-    list.insert(11);
-
-
-    list.half_reverse();
-    list.print(std::cout);
 }
