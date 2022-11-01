@@ -1,33 +1,19 @@
 #include <iostream>
 #include <vector>
-#include <map>
+#include <unordered_map>
 #include <algorithm>
 #include <cassert>
 
 #define DEBUG 1
 
-void insert_in_map(std::map<int, std::vector<int>>& m, const int key, const int pos) {
-    const auto it = m.find(key);
-
-    // elemento trovato
-    if (it != m.end()) {
-        it->second.push_back(pos);
-    } else {
-        // se non trovo l'elemento creo un nuovo vettore e lo associo alla chiave
-        std::vector<int> v;
-        v.push_back(pos);
-        m.insert({key,  v});
-    }
-    
-}
 
 const std::vector<int> find_min(std::vector<int>& input) {
-    std::map<int, std::vector<int>> map;
+    std::unordered_map<int, std::vector<int>> map;
     std::vector<int> result (input.size());
 
     // popolo la mappa
     for (int i = 0; i < input.size(); ++i) {
-        insert_in_map(map, input[i], i);
+        map[input[i]].push_back(i);
     }
     // ordino il vettore con std::stable_sort O(nlog(n))
     std::stable_sort(input.begin(), input.end());
