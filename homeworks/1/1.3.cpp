@@ -16,7 +16,7 @@ private:
     void destroy(Node* n);
     void left_rotate(Node* x);
     void right_rotate(Node* x);
-    void move_up(Node* x);
+    void min_heapify(Node* x);
 
 public:
     void treap_insert(const T& elem);
@@ -51,7 +51,7 @@ template <typename T> void Tree<T>::treap_insert(const T& elem) {
     }
 
     if (z->parent) {
-        move_up(z);
+        min_heapify(z);
     }
     
 }
@@ -129,7 +129,7 @@ template <typename T>  void Tree<T>::right_rotate(Node* n) {
 	n->parent = y;
 }
 
-template <typename T> void Tree<T>::move_up(Node* n) {
+template <typename T> void Tree<T>::min_heapify(Node* n) {
     if (!n->parent) {
 		return;
 	}
@@ -142,7 +142,7 @@ template <typename T> void Tree<T>::move_up(Node* n) {
 	} else {
 		left_rotate(n->parent);
 	}
-    move_up(n);
+    min_heapify(n);
 }
 
 int main() {
