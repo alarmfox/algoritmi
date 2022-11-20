@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <stack>
 
 typedef std::vector<std::vector<int>> Matrix;
 
