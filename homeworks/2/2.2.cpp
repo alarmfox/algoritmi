@@ -1,4 +1,3 @@
-// Number of ways in which participant can take part.
 #include<iostream>
  
 const int solution(const int x) {
