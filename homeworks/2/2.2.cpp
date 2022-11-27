@@ -1,5 +1,9 @@
 #include<iostream>
 #include <vector>
+#include <cassert>
+
+#define DEBUG 1
+
 
 const int solution(const int n) {
     int pairs[n+1];
@@ -14,8 +18,13 @@ const int solution(const int n) {
 }
  
 int main() {
-    const std::vector<int> inputs = {3, 4, 5};
-    for (const int input : inputs) {
-      std::cout << solution(input) << std::endl;
+    const std::vector<std::pair<int, int>> test_cases = {{3,4}, {4,10}, {5,26}};
+    int res;
+    for (const auto tc : test_cases) {
+      res = solution(tc.first);
+      assert(res == tc.second);
+      if(DEBUG) {
+        std::cout<<"input: "<<tc.first<<"; risultato: "<<res<<"; risultato atteso: "<<tc.second<<std::endl;
+      }
     }
 }

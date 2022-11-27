@@ -5,14 +5,16 @@ typedef std::vector<std::vector<int>> Matrix;
 
 #define DEBUG 0
 
-void print_matrix(const Matrix &m) {
+std::ostream& print_matrix(const Matrix &m, std::ostream& out) {
   for (int i = 0; i<m.size(); ++i) {
     for (int j = 0; j < m[i].size(); ++j) {
-      std::cout<<m[i][j];
+      out<<m[i][j];
     }
-    std::cout<<std::endl;
+    out<<std::endl;
   }
+  return out;
 }
+
 
 bool is_in(const int start, const int end, const int value) {
   return value <= end && value >= start;
@@ -54,7 +56,7 @@ void find_min_path(const Matrix& m, Matrix & visited, int start_x, int start_y, 
   res++;
 
   if (DEBUG) {
-    print_matrix(visited);
+    print_matrix(visited, std::cout);
     std::cout<<std::endl;
   }
 

@@ -4,15 +4,16 @@
 
 typedef std::vector<std::vector<int>> Matrix;
 
-#define DEBUG 0
+#define DEBUG 1
 
-void print_matrix(const Matrix &m) {
+std::ostream& print_matrix(const Matrix &m, std::ostream& out) {
   for (int i = 0; i<m.size(); ++i) {
     for (int j = 0; j < m[i].size(); ++j) {
-      std::cout<<m[i][j];
+      out<<m[i][j];
     }
-    std::cout<<std::endl;
+    out<<std::endl;
   }
+  return out;
 }
 
 const int solution(const Matrix& M) {
@@ -28,6 +29,7 @@ const int solution(const Matrix& M) {
       }
     }
   }
+  
 
   for (int i = 0; i < m; i++) {
     for (int j = 0; j < n; j++) {
@@ -43,7 +45,7 @@ const int solution(const Matrix& M) {
 }
 
 int main() {
-  const std::vector<std::pair<Matrix, int>> inputs = {
+  const std::vector<std::pair<Matrix, int>> test_cases = {
     {
     {
       {0,1,0,1,1},
@@ -70,8 +72,11 @@ int main() {
     }
   };
   int res;
-  for (const auto input : inputs ) {
-    res = solution(input.first);
-    assert(res == input.second);
+  for (const auto tc : test_cases ) {
+    res = solution(tc.first);
+    assert(res == tc.second);
+    if(DEBUG) {
+      std::cout<<"input: \n";print_matrix(tc.first, std::cout)<<"risultato: "<<res<<"; risultato atteso: "<<tc.second<<"\n\n";
+    }
   }
 }
