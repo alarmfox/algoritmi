@@ -9,7 +9,7 @@ typedef std::vector<std::vector<int>> Matrix;
 std::ostream& print_matrix(const Matrix &m, std::ostream& out) {
   for (int i = 0; i<m.size(); ++i) {
     for (int j = 0; j < m[i].size(); ++j) {
-      out<<m[i][j];
+      out<<m[i][j]<<' ';
     }
     out<<std::endl;
   }
@@ -18,11 +18,11 @@ std::ostream& print_matrix(const Matrix &m, std::ostream& out) {
 
 const int solution(const Matrix& M) {
   int area = 0, m = M.size(), n = M[0].size();
-  Matrix dp(m + 1, std::vector<int>(n + 1));
+  Matrix dp(m, std::vector<int>(n));
   for (int i = m - 1; i >= 0; i--) {
     for (int j = n - 1; j >= 0; j--) {
       if (M[i][j] == 0) {
-        dp[i][j] = dp[i][j + 1] + 1;
+        dp[i][j] = j+1 >=n ? 1 : dp[i][j + 1] + 1;
       }
       else {
         dp[i][j] = 0;
