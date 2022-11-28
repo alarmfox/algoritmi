@@ -22,6 +22,7 @@ const int solution(const Matrix& M) {
   for (int i = m - 1; i >= 0; i--) {
     for (int j = n - 1; j >= 0; j--) {
       if (M[i][j] == 0) {
+        // controlliamo che j+1 sia nel range della matrice, se si aggiungiamo 1 alla cella altrimenti assegnamo 1 come valore di partenza.
         dp[i][j] = j+1 >=n ? 1 : dp[i][j + 1] + 1;
       }
       else {
