@@ -10,26 +10,31 @@ int solution(const std::string &s, const std::string& rev_s) {
     int n = rev_s.length();
  
     int dp[m+1][n+1];
-
-    for (int i = 0; i < m; ++i) {
+    
+    // inizializziamo la prima riga e la prima colonna con tutti 0
+    for (int i = 0; i <= m; ++i) {
       dp[0][i] = 0;
     }
  
-    for (int i = 0; i < m; ++i) {
+    for (int i = 0; i <= m; ++i) {
       dp[i][0] = 0;
     }
 
+    // popoliamo la matrice di appoggio
     for (int i=1; i<=m; i++) {
         for (int j=1; j<=n; j++) {
+            // se i caratteri iniziali e finali della sottosequenza non coincidono, allora viene preso il massimo tra il valore sopra e quello a sinistra
             if (s[i-1] != rev_s[j-1]) {
                 dp[i][j] = std::max(dp[i-1][j], dp[i][j-1]);
             }
+            // altrimenti incrementiamo di 1 il valore sulla diagonale
             else {
                 dp[i][j] = dp[i-1][j-1] + 1;
             }
         }
     }
- 
+
+    // per costruzione la matrice avrà nell'ultimo elemento la lunghezza massima della sottosequenza palindroma
     return dp[m][n];
 }
  
