@@ -34,7 +34,7 @@ int solution(const std::string &s, const std::string& rev_s) {
         }
     }
 
-    // per costruzione la matrice avrà nell'ultimo elemento la lunghezza massima della sottosequenza palindroma
+    // per costruzione la matrice avrà nell'ultimo elemento la lunghezza massima della sottosequenza palindromica
     return dp[m][n];
 }
  
