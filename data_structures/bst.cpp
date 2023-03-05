@@ -1,6 +1,14 @@
 #include <iostream>
+
 using namespace std;
 
+// Binary Search Tree   (BST)
+// 1. Each node has at most two children
+// 2. The left subtree of a node contains only nodes with keys less than the node's keys
+// 3. The right subtree of a node contains only nodes with keys greater than the node's key
+// 4. The left and right subtree each must also be a binary search Tree
+// 5. There must be no duplicate nodes
+// 6. The tree is empty or the root node has no parent
 struct Tree {
     int val;
     Tree *left, *right;
