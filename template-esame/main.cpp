@@ -1,6 +1,4 @@
-#include <fstream>
-#include <iostream>
-#include <istream>
+#include <bits/stdc++.h>
 
 #define TEST 0
 
