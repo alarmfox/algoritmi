@@ -3,6 +3,7 @@
 #include <istream>
 
 #define TEST 0
+
 int main() {
 
   std::istream *in = &std::cin;
