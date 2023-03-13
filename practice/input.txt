@@ -1,6 +1,4 @@
-1
-7
-1 101 2 3 100 4 5
-1 2 5
-4 10
-2 5 3 6
+3
+GeeksforGeeks GeeksQuiz
+abcdxyz xyzabcd
+zxabcdezy yzabcdezx

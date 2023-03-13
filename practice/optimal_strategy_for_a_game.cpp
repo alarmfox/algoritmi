@@ -1,6 +1,10 @@
 #include <bits/stdc++.h>
 
-#define TEST 0
+#define TEST 1
+
+int solve(const int nums[], const int n) {
+  
+}
 
 int main() {
 
@@ -15,9 +19,17 @@ int main() {
   }
 
   std::istream &cin = *in;
-  
 
   // CODICE
+  int n, t, nums[10000];
+  cin >> t;
+  while (t--) {
+    cin >> n;
+    for (int i = 0; i <n ;i++) {
+      cin >> nums[i];
+    }
+    std::cout << solve(nums, n) << std::endl;
+  }
 
   if (TEST)
     delete in;
