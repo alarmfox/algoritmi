@@ -3,6 +3,14 @@
 #define TEST 1
 #define DEBUG 1
 
+// Due ladri mettono a segno un colpo alla banca d’Italia. Recuperano un bottino composto da monete
+// d’oro di diverso valore. Devono dividerselo il più equamente possibile, ossia devono minimizzare la
+// differenza tra il valore che ciascuno di loro ottiene. Scrivere un algoritmo per determinare la
+// suddivisione, stampando in output la differenza (positiva) tra il valore che i due ladri ottengono
+// dividendosi il bottino.
+// Il bottino contiene al massimo 50 monete, il valore di ciascuna moneta varia da 1 a 1000. Il valore
+// di una moneta può occorrere più di una volta.
+
 int solve(const int nums[], const int n) {
   int sum = 0;
   for (int i = 0; i < n; i++) {
@@ -38,9 +46,10 @@ int solve(const int nums[], const int n) {
     }
   }
 
+  int diff = INT_MAX;
   for (int j = sum / 2; j >= 0; j--) {
     if (dp[n][j]) {
-      int diff = sum - 2 * j;
+      diff = sum - 2 * j;
       return diff;
     }
   }
