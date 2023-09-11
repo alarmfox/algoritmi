@@ -17,37 +17,6 @@ using namespace std;
 
 
 int dp[101][101];
-
-int min_cost_to_cut_a_stick_recursive(vector<int> & cuts, int l, int r, int start, int stop) {
-    if(l > r){
-        return 0;
-    }
-
-    if(dp[l][r]!=-1){
-        return dp[l][r];
-    }
-
-    int cost=INT_MAX;
-    for(int i=l;i<=r;i++){
-
-        int left_cost = min_cost_to_cut_a_stick_recursive(cuts, start, cuts[i], l, i-1);
-        int right_cost = min_cost_to_cut_a_stick_recursive(cuts, cuts[i], stop, i+1, r);
-
-
-        cost = min(cost, (stop - start) + left_cost + right_cost);
-    }
-
-    return dp[l][r]=cost;
-}
-
-
-int min_cost_to_cut_a_stick(vector<int>& cuts, int n) {
-    memset(dp, -1, sizeof(dp));
-    sort(cuts.begin(), cuts.end());
-    return min_cost_to_cut_a_stick_recursive(cuts, 0, cuts.size() - 1, 0, n);
-
-}
-
     
     int solve(int startstick,int endstick,vector<int>& cuts,int left,int right){
 
